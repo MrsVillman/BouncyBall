@@ -66,5 +66,12 @@ func dropBall() {
 
 
 // to save to GitHub
-// Source Control > New Git Rep.
+// Source Control > New Git Rep. > create
+// Source nav tab (second from left in left pane) > Repositories > right click on project >
+// new ____ remote > create
+
+// save after first time
+// Source Control > commit > check "push to remote" (lower left) >
+comment > commit
+// if you forgot to push to remote go to Source Control > push
 
