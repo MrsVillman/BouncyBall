@@ -3,7 +3,6 @@ import Foundation
 // Circle
 let ball = OvalShape(width: 150, height: 150)
 
-
 // Polygon (rectangular) Barrier
 let barrierWidth = 300.0
 let barrierHeight = 25.0
@@ -27,6 +26,16 @@ let funnelPoints = [
 
 let funnel = PolygonShape(points: funnelPoints)
 
+// Target Shape
+let targetPoints = [
+    Point(x: 10, y: 0),
+    Point(x: 0, y: 10),
+    Point(x: 10, y: 20),
+    Point(x: 20, y: 10)
+]
+
+let target = PolygonShape(points: targetPoints)
+
 
 /*
 The setup() function is called once when the app launches. Without it, your app won't compile.
@@ -38,42 +47,62 @@ for example if statements and for loops, at the top level; they have to be writt
 of a function.
 */
 
-fileprivate func ballFunc() {
+fileprivate func setupBall() {
     // Add circle to the scene
-    ball.position = Point(x: 40, y: 40)
+    ball.position = Point(x: 200, y: scene.height - 25)
+    scene.add(ball)
     ball.hasPhysics = true
     ball.fillColor = .blue
-    scene.add(ball)
+    ball.onCollision = ballCollided(with:)
 }
 
-fileprivate func barrierFunc() {
+fileprivate func setupBarrier() {
     // Add barrier to the scene
     barrier.position = Point(x: 200, y: 150)
     barrier.hasPhysics = true
-    barrier.fillColor = .brown
     scene.add(barrier)
     barrier.isImmobile = true
+    barrier.fillColor = .brown
 }
 
-fileprivate func funnelFunc() {
+fileprivate func setupFunnel() {
     // Add funnel to the scene
     funnel.position = Point(x: 200,
                             y: scene.height - 25)
-    funnel.fillColor = .gray
     scene.add(funnel)
     // callback for when user clicks funnel (like onEvents)
     funnel.onTapped = dropBall
+    funnel.fillColor = .gray
+}
+
+func setupTarget() {
+    //setup diamond shaped targets
+    target.position = Point(x: 200, y: 400)
+    target.hasPhysics = true
+    target.isImmobile = true
+    target.isImpermeable = false
+    target.fillColor = .yellow
+    target.name = "target"
+    scene.add(target)
 }
 
 func setup() {
-    ballFunc()
-    barrierFunc()
-    funnelFunc()
+    setupBall()
+    setupBarrier()
+    setupFunnel()
+    setupTarget()
 }
 
 // Drops the ball by moving it to the funnel's position
 func dropBall() {
     ball.position = funnel.position
+}
+
+// Handles collisions between the ball and the targets.
+func ballCollided(with otherShape: Shape) {
+    if otherShape.name != "target" { return }
+    
+    otherShape.fillColor = .green
 }
 
 
