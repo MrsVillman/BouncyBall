@@ -1,7 +1,7 @@
 import Foundation
 
 // Circle
-let circle = OvalShape(width: 150, height: 150)
+let ball = OvalShape(width: 150, height: 150)
 
 
 // Polygon (rectangular) Barrier
@@ -38,40 +38,55 @@ for example if statements and for loops, at the top level; they have to be writt
 of a function.
 */
 
-func setup() {
-    
+fileprivate func ballFunc() {
     // Add circle to the scene
-    circle.position = Point(x: 250, y: 400)
-    circle.hasPhysics = true
-    scene.add(circle)
-    
+    ball.position = Point(x: 40, y: 40)
+    ball.hasPhysics = true
+    ball.fillColor = .blue
+    scene.add(ball)
+}
+
+fileprivate func barrierFunc() {
     // Add barrier to the scene
     barrier.position = Point(x: 200, y: 150)
     barrier.hasPhysics = true
+    barrier.fillColor = .brown
     scene.add(barrier)
     barrier.isImmobile = true
-    
+}
+
+fileprivate func funnelFunc() {
     // Add funnel to the scene
-    funnel.position = Point(x: 200, y: scene.height - 25)
+    funnel.position = Point(x: 200,
+                            y: scene.height - 25)
+    funnel.fillColor = .gray
     scene.add(funnel)
-    
     // callback for when user clicks funnel (like onEvents)
     funnel.onTapped = dropBall
 }
 
+func setup() {
+    ballFunc()
+    barrierFunc()
+    funnelFunc()
+}
+
 // Drops the ball by moving it to the funnel's position
 func dropBall() {
-    circle.position = funnel.position
+    ball.position = funnel.position
 }
+
+
+
 
 
 // to save to GitHub
 // Source Control > New Git Rep. > create
 // Source nav tab (second from left in left pane) > Repositories > right click on project >
 // new ____ remote > create
-
+//
 // save after first time
 // Source Control > commit > check "push to remote" (lower left) >
-comment > commit
+//comment > commit
 // if you forgot to push to remote go to Source Control > push
-
+//
