@@ -103,9 +103,15 @@ func addTarget(position: Point) {
 
 func setup() {
     setupBall()
-    addBarrier(position: Point(x: 200, y: 150), width: 80, height: 25, angle: 0.1)
+    addBarrier(position: Point(x: 305, y: 36), width: 80, height: 25, angle: 0.1)
+    addBarrier(position: Point(x: 143, y: 490), width: 80, height: 25, angle: -0.1)
+    addBarrier(position: Point(x: 93, y: 181), width: 80, height: 25, angle: -0.3)
+    addBarrier(position: Point(x: 337, y: 348), width: 80, height: 25, angle: 0.3)
     setupFunnel()
-    addTarget(position: Point(x: 150, y: 400))
+    addTarget(position: Point(x: 236, y: 127))
+    addTarget(position: Point(x: 148, y: 399))
+    addTarget(position: Point(x: 111, y: 259))
+    addTarget(position: Point(x: 319, y: 214))
     resetGame()
     scene.onShapeMoved = printPosition(of:)
 }
@@ -116,6 +122,9 @@ func dropBall() {
     ball.stopAllMotion()
     for barrier in barriers {
         barrier.isDraggable = false
+    }
+    for target in targets {
+        target.fillColor = .yellow
     }
 }
 
@@ -130,6 +139,18 @@ func ballCollided(with otherShape: Shape) {
 func ballExitedScene() {
     for barrier in barriers {
         barrier.isDraggable = true
+    }
+    var hitTargets = 0
+    for target in targets {
+        if target.fillColor == .green {
+            hitTargets += 1
+        }
+    }
+    if hitTargets == targets.count {
+        scene.presentAlert(text: "You won!", completion: alertDismissed)
+    }
+    func alertDismissed() {
+        
     }
 }
 
