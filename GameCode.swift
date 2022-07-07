@@ -48,12 +48,17 @@ of a function.
 */
 
 fileprivate func setupBall() {
+    ball.onTapped = resetGame
     // Add circle to the scene
     ball.position = Point(x: 200, y: scene.height - 25)
     scene.add(ball)
     ball.hasPhysics = true
     ball.fillColor = .blue
     ball.onCollision = ballCollided(with:)
+    ball.isDraggable = false
+    scene.trackShape(ball)
+    ball.onExitedScene = ballExitedScene
+    
 }
 
 fileprivate func setupBarrier() {
@@ -73,6 +78,7 @@ fileprivate func setupFunnel() {
     // callback for when user clicks funnel (like onEvents)
     funnel.onTapped = dropBall
     funnel.fillColor = .gray
+    funnel.isDraggable = false
 }
 
 func setupTarget() {
@@ -84,6 +90,7 @@ func setupTarget() {
     target.fillColor = .yellow
     target.name = "target"
     scene.add(target)
+    target.isDraggable = false
 }
 
 func setup() {
@@ -91,11 +98,14 @@ func setup() {
     setupBarrier()
     setupFunnel()
     setupTarget()
+    resetGame()
 }
 
 // Drops the ball by moving it to the funnel's position
 func dropBall() {
     ball.position = funnel.position
+    ball.stopAllMotion()
+    barrier.isDraggable = false
 }
 
 // Handles collisions between the ball and the targets.
@@ -105,6 +115,16 @@ func ballCollided(with otherShape: Shape) {
     otherShape.fillColor = .green
 }
 
+// Callback for when ball exits the scene
+func ballExitedScene() {
+    barrier.isDraggable = true
+}
+
+// Resets the ghame by moving the ball below the scene,
+// which will unlock the barriers
+func resetGame() {
+    ball.position = Point(x: 0, y: -80)
+}
 
 
 
